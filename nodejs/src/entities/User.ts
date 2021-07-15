@@ -1,21 +1,18 @@
 import {
-  Entity,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn
-} from 'typeorm';
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 
-@Entity('settings')
-export default class Setting {
+@Entity('users')
+export default class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  username: string;
-
-  @Column()
-  chat: boolean;
+  email: string;
 
   @CreateDateColumn()
   created_at: Date;
