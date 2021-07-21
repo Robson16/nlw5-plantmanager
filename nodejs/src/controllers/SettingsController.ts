@@ -17,4 +17,20 @@ export default class SettingsController {
       });
     }
   }
+
+  async findByUsername(request: Request, response: Response) {
+    const { username } = request.params;
+
+    const settingsService = new SettingsService();
+
+    try {
+      const settings = await settingsService.findByUsername(username);
+
+      return response.json(settings);
+    } catch (error) {
+      return response.status(400).json({
+        message: error.message,
+      });
+    }
+  }
 }
