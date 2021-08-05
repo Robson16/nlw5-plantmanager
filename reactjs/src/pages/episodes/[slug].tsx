@@ -1,11 +1,13 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Image from 'next/image';
+import Head from 'next/head';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { api } from '../../services/api';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
+import { usePlayer } from '../../contexts/PlayerContext';
 
 import styles from './episode.module.scss';
 
@@ -26,8 +28,14 @@ type EpisodeProps = {
 }
 
 export default function Episode({ episode }: EpisodeProps) {
+  const { play } = usePlayer();
+
   return (
     <div className={styles.episode}>
+      <Head>
+        <title>{episode.title} | PodCastr</title>
+      </Head>
+
       <div className={styles.thumbnailContainer}>
         <Link href="/" passHref>
           <button type="button">
@@ -41,7 +49,7 @@ export default function Episode({ episode }: EpisodeProps) {
           alt={episode.title}
           objectFit="cover"
         />
-        <button type="button">
+        <button type="button" onClick={() => { play(episode) }}>
           <img src="/play.svg" alt="Reproduzir episódio" />
         </button>
       </div>
