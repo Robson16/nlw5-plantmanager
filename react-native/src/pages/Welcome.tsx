@@ -37,13 +37,9 @@ export function Welcome() {
         <Button
           style={styles.button}
           activeOpacity={0.7}
+          icon="chevron-right"
           onPress={handleStart}
-        >
-          <Feather
-            name="chevron-right"
-            style={styles.buttonIcon}
-          />
-        </Button>
+        />
       </View>
     </SafeAreaView>
   );
@@ -83,10 +79,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     height: 56,
     width: 56,
-  },
-  buttonIcon: {
-    color: colors.white,
-    fontSize: 32,
   },
   image: {
     height: Dimensions.get('window').width * 0.7
