@@ -5,11 +5,15 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 interface EnvironmentButtonProps extends RectButtonProps {
-  children: string;
+  title: string;
   active?: boolean;
 }
 
-export const EnvironmentButton: React.FC<EnvironmentButtonProps> = ({ children, active = false, ...rest }) => {
+export function EnvironmentButton({
+  title,
+  active = false,
+  ...rest
+}: EnvironmentButtonProps) {
   return (
     <RectButton
       style={[
@@ -22,7 +26,7 @@ export const EnvironmentButton: React.FC<EnvironmentButtonProps> = ({ children, 
         styles.text,
         active && styles.textActive,
       ]}>
-        {children}
+        {title}
       </Text>
     </RectButton>
   );
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    marginRight: 5,
+    marginHorizontal: 5,
   },
   containerActive: {
     backgroundColor: colors.green_light,
