@@ -1,9 +1,11 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 import { EnvironmentButton } from "../components/EnvironmentButton";
 import { Header } from "../components/Header";
 import { Load } from "../components/Load";
 import { PlantCardPrimary } from "../components/PlantCardPrimary";
+import { PlantProps } from '../libs/storage';
 import api from "../services/api";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -11,19 +13,6 @@ import fonts from "../styles/fonts";
 interface EnvironmentProps {
   key: string;
   title: string;
-}
-
-interface PlantProps {
-  id: string;
-  name: string;
-  about: string;
-  water_tips: string;
-  photo: string;
-  environments: [string];
-  frequency: {
-    times: number;
-    repeat_every: string;
-  }
 }
 
 export function PlantSelect() {
@@ -34,7 +23,8 @@ export function PlantSelect() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [loadedAll, setLoadedAll] = useState(false);
+
+  const navigation = useNavigation();
 
   async function fetchPlants() {
     const { data } = await api
@@ -59,7 +49,7 @@ export function PlantSelect() {
   function handleEnvironmentSelected(environment: string) {
     setEnvironmentSelected(environment);
 
-    if (environment === "all") {
+    if (environment == 'all') {
       return setFilteredPlants(plants);
     }
 
@@ -80,6 +70,10 @@ export function PlantSelect() {
     setPage(oldValue => oldValue + 1);
 
     fetchPlants();
+  }
+
+  function handlePlantSelect(plant: PlantProps) {
+    navigation.navigate('PlantSave' as never, { plant } as never);
   }
 
   useEffect(() => {
@@ -142,6 +136,7 @@ export function PlantSelect() {
           renderItem={({ item }) => (
             <PlantCardPrimary
               data={item}
+              onPress={() => handlePlantSelect(item)}
             />
           )}
           showsVerticalScrollIndicator={false}

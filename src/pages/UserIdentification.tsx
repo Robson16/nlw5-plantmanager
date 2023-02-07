@@ -1,6 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useState } from "react";
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { Button } from "../components/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -12,23 +13,39 @@ export function UserIdentification() {
   const [isFilled, setIsFilled] = useState(false);
   const [name, setName] = useState<string>();
 
-  const handleInputBlur = useCallback(() => {
+  function handleInputBlur() {
     setIsFocused(false);
     setIsFilled(!!name);
-  }, []);
+  };
 
-  const handleInputFocus = useCallback(() => {
+  function handleInputFocus() {
     setIsFocused(true);
-  }, []);
+  };
 
-  const handleInputChange = useCallback((value: string) => {
+  function handleInputChange(value: string) {
     setIsFilled(!!value);
     setName(value);
-  }, []);
+  };
 
-  const handleSubmit = useCallback(() => {
-    navigation.navigate('Confirmation' as never);
-  }, []);
+  async function handleSubmit() {
+    if (!name) {
+      return Alert.alert('Me diz como chamar você 😢');
+    }
+
+    try {
+      await AsyncStorage.setItem('@plantmanager:user', name);
+
+      navigation.navigate('Confirmation' as never, {
+        title: 'Pronto',
+        subtitle: 'Agora vamos começar a cuidar das suas plantas com muito cuidado.',
+        buttonTitle: 'Começar',
+        icon: 'smile',
+        nextScreen: 'PlantSelect',
+      } as never);
+    } catch (error) {
+      Alert.alert('Deu algo errado, me diz novamente como chamar você? 😅')
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>

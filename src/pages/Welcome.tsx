@@ -1,4 +1,3 @@
-import { Feather } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback } from "react";
 import { Dimensions, Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
